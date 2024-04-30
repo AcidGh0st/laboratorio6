@@ -25,7 +25,8 @@ public class LinkedStack implements Stack {
     
     @Override
     public void clear() {
-        top = null;
+        top = null;//Si pasa esto...
+        this.counter=0;//counter en cero
     }
 
     @Override
@@ -115,7 +116,7 @@ public class LinkedStack implements Stack {
     public void replace(Object a, Object b) throws StackException {
         if(this.isEmpty())
             throw new StackException("Linked Stack is empty");
-        LinkedStack aux = new LinkedStack();
+        LinkedStack aux = new LinkedStack();//aux
         while(!isEmpty()){
             if(util.Utility.compare(top(), a)==0){
                 pop(); //desapilo el objeto

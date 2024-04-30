@@ -11,7 +11,7 @@ package domain.queue;
  */
 public class Node {
     public Object data; //elemento guardado en el nodo
-    public Integer priority; //1=low, 2=medium, 3=high
+    public Integer priority; //1=high, 2=medium, 3=low
     public Node next; //enlace al sgte nodo
     
     //Constructor

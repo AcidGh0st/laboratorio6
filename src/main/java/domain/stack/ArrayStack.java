@@ -18,7 +18,7 @@ public class ArrayStack implements Stack {
     public ArrayStack(int n){
         if(n<=0) System.exit(1); //se sale
         this.n = n;
-        this.top = -1; //indica q la pila esta vacia
+        this.top = -1; //el -1, indica q la pila esta vacia
         this.dataStack = new Object[n];
     }
     
@@ -80,15 +80,15 @@ public class ArrayStack implements Stack {
         if(isEmpty()) return "Array Stack is Empty";
         String result = "\nArray Stack Content";
         try {
-            ArrayStack aux = new ArrayStack(size());
+            ArrayStack aux = new ArrayStack(size());//Creo una pila auxiliar, obj ded tipo de la clase
             while(!isEmpty()){           
-                    result+="\n"+peek();
-                    aux.push(pop());
+                    result+="\n"+peek(); //va devolviendo el tope
+                    aux.push(pop());//llena la pila aux con la original
             }
             
             //dejamos la pila como al inicio
             while(!aux.isEmpty()){           
-                push(aux.pop());
+                push(aux.pop());//apilamos los elementos de la pila auxiliar
             }
         } catch (StackException ex) {
                 System.out.println(ex.getMessage());

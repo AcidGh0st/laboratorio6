@@ -47,6 +47,6 @@ public class HelloController {
 
     @FXML
     public void converterOnAction(ActionEvent actionEvent) {
-        loadPage("converter.fxml");
+        loadPage("Converter.fxml");
     }
 }
