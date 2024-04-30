@@ -19,8 +19,9 @@ public class HelloApplication extends Application {
         stage.setResizable(false);
         stage.show();
     }
- 
-    //prueba git hub
+    
+    //prueba Git
+    // hola
 
     public static void main(String[] args) {
         launch();
