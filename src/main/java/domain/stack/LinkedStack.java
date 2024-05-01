@@ -17,7 +17,9 @@ public class LinkedStack implements Stack {
         this.top = null;
         this.counter = 0;
     }
-    
+
+
+
     @Override
     public int size() {
         return counter;
@@ -93,26 +95,7 @@ public class LinkedStack implements Stack {
         }
         return result;
     }
-    
-    /*********************************
-     * IF-3001. EXAMEN PARCIAL 1 (20%)
-     * I-2020
-     *********************************/
-    
-    /**
-     * PREGUNTA - METODO replace
-     * Suponga un nuevo método para la implementación en java de la 
-     * pila enlazada (LinkedStack) llamado replace.Este método 
-     * reemplaza (si existe) un objeto de la pila por uno nuevo 
-     * indicado.Por ejemplo, si stack1 tiene apilados los elementos 
-     * 10, 20, 30, 40, 50; entonces el llamado de stack1.replace(30, 100); 
-     * debería dejar stack1 con los elementos: 10, 20, 100, 40, 50.
-     * Escriba el código de implementación en java para el método 
-     * replace.
-     * @param a
-     * @param b
-     * @throws StackException
-     */
+
     public void replace(Object a, Object b) throws StackException {
         if(this.isEmpty())
             throw new StackException("Linked Stack is empty");

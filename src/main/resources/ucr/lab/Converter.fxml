@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="626.0" prefWidth="611.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Converter">
+<AnchorPane prefHeight="626.0" prefWidth="611.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Converter">
     <children>
         <Pane prefHeight="101.0" prefWidth="600.0">
             <children>
@@ -33,7 +28,7 @@
                         <Font name="Forte" size="19.0" />
                     </font>
                 </RadioButton>
-                <RadioButton fx:id="posfixRadioButton" layoutX="375.0" layoutY="47.0" mnemonicParsing="false" onAction="#postfixOnAction" text="PostFix">
+                <RadioButton fx:id="postfixRadioButton" layoutX="375.0" layoutY="47.0" mnemonicParsing="false" onAction="#postfixOnAction" text="PostFix">
                     <font>
                         <Font name="Forte" size="19.0" />
                     </font>
@@ -99,7 +94,7 @@
                 <Text fx:id="result2Text5" layoutX="500.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ab/cd/+" />
             </children>
         </Pane>
-      <Button layoutX="185.0" layoutY="520.0" mnemonicParsing="false" onAction="#convertOnAction" prefHeight="38.0" prefWidth="75.0" text="Convert" />
-      <Button layoutX="332.0" layoutY="520.0" mnemonicParsing="false" onAction="#cleanOnAction" prefHeight="38.0" prefWidth="75.0" text="Clean" />
+      <Button layoutX="123.0" layoutY="520.0" mnemonicParsing="false" onAction="#convertOnAction" prefHeight="38.0" prefWidth="137.0" text="Convert" />
+      <Button layoutX="332.0" layoutY="520.0" mnemonicParsing="false" onAction="#cleanOnAction" prefHeight="38.0" prefWidth="137.0" text="Clean" />
     </children>
 </AnchorPane>
