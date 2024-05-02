@@ -2,9 +2,12 @@ package domain;
 
 import domain.stack.ArrayStack;
 import domain.stack.LinkedStack;
+import domain.stack.Stack;
 import domain.stack.StackException;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,6 +49,7 @@ class StackTest {
         //Muestra la pila en donde se almacenan los objetos tipo Person que tienen una edad igual o menor a 20
         System.out.println(" ");
 
+        System.out.println("Division de los objetos Person por casos: ");
         popPersons(aS, st, "", 20); // Caso 1: age <= 20
 
 
@@ -57,6 +61,7 @@ class StackTest {
         popPersons(aS, st, "Ana", 0); // Caso 3: name = Ana
 
 
+        System.out.println("Contenido actual de la lista: ");
         //Muestra las pilas originales despues de haber desapilado los objetos de cada caso
         System.out.println(st);
         System.out.println(aS);
@@ -102,29 +107,28 @@ class StackTest {
     }
 
 
+
     private void popPersons(ArrayStack arrayStack, LinkedStack linkedStack, String name, int age) throws StackException {
         LinkedStack tempStack = new LinkedStack(); // Pila temporal para restauración
 
-        /*
-        Desapilar objetos de la pila ArrayStack dependiendo los casos que se presentan:
+        // Listas para almacenar objetos según cada caso
+        List<Person> nicole = new ArrayList<>();
+        List<Person> edadIgualMenor_20 = new ArrayList<>();
+        List<Person> ana = new ArrayList<>();
 
-        Caso 1: age<=20
-        Case 2: name=Nicole, age<=23
-        Caso 3: name=Ana
-
-         */
+        // Procesar ArrayStack
         while (!arrayStack.isEmpty()) {
             Person person = (Person) arrayStack.pop();
+
             if (Objects.equals(person.getName(), "Nicole") && person.getAge() <= 23) {
-                System.out.println("ArrayStack: " + person);
-
-            } else if (person.getAge() <= age && (name.isEmpty() || person.getName().equals(name))) {
-                System.out.println("ArrayStack: " + person);
-
-            } else if(Objects.equals(person.getName(), "Ana")) {
-                System.out.println("ArrayStack: " + person);
-            }else
-                tempStack.push(person);
+                nicole.add(person); // Caso 2: name=Nicole, age<=23
+            } else if (person.getAge() <= age) {
+                edadIgualMenor_20.add(person); // Caso 1: age<=20
+            } else if (Objects.equals(person.getName(), "Ana")) {
+                ana.add(person); // Caso 3: name=Ana
+            } else {
+                tempStack.push(person); // Conservar otros elementos en la pila temporal
+            }
         }
 
         // Restaurar los elementos en la pila original de ArrayStack desde la pila temporal
@@ -132,31 +136,18 @@ class StackTest {
             arrayStack.push(tempStack.pop());
         }
 
-
-        /*
-        Desapilar objetos de la pila LinkedStack dependiendo los casos que se presentan:
-
-        Caso 1: age<=20
-        Case 2: name=Nicole, age<=23
-        Caso 3: name=Ana
-
-         */
-
+        // Procesar LinkedStack
         while (!linkedStack.isEmpty()) {
             Person person = (Person) linkedStack.pop();
+
             if (Objects.equals(person.getName(), "Nicole") && person.getAge() <= 23) {
-                System.out.println("LinkedStack: " + person);
-
-            } else if (person.getAge() <= age && (name.isEmpty() || person.getName().equals(name))) {
-                System.out.println("LinkedStack: " + person);
-
-            }else if(Objects.equals(person.getName(), "Ana")) {
-
-                System.out.println("LinkedStack: " + person);
-
+                nicole.add(person); // Caso 2: name=Nicole, age<=23
+            } else if (person.getAge() <= age) {
+                edadIgualMenor_20.add(person); // Caso 1: age<=20
+            } else if (Objects.equals(person.getName(), "Ana")) {
+                ana.add(person); // Caso 3: name=Ana
             } else {
-                // Restaurar el elemento en LinkedStack usando la pila temporal
-                tempStack.push(person);
+                tempStack.push(person); // Conservar otros elementos en la pila temporal
             }
         }
 
@@ -165,6 +156,23 @@ class StackTest {
             linkedStack.push(tempStack.pop());
         }
 
+        // Mostrar resultados al final del procesamiento
+        System.out.println("Case 1 - Edad igual o menor a " + age + ":");
+        for (Person person : edadIgualMenor_20) {
+            System.out.println("Case 1: " + person);
+        }
 
+        System.out.println("Case 2 - Nombre Nicole y edad menor o igual a 23:");
+        for (Person person : nicole) {
+            System.out.println("Case 2: " + person);
+        }
+
+        System.out.println("Case 3 - Nombre Ana:");
+        for (Person person : ana) {
+            System.out.println("Case 3: " + person);
+        }
     }
+
+
+
 }
