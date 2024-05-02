@@ -10,7 +10,7 @@ import java.util.Random;
 class QueueTest {
 
     @Test
-    void Stack() {
+    void Queue() {
         Random randomPriority = new Random(); //Generar numeros aleatorios
         int totalNumb_Messages = 15; //Variable que contiene el numero total de mensajes que se van a procesar
         int maxMessagesQueue = 5; //Variable que define la cantidad maxima de objetos que cada cola debe contener

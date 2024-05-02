@@ -1,21 +1,21 @@
 package domain;
 
 public class Person {
-    private String id;
+    private int id;
     private String name;
     private int age;
 
-    public Person(String id, String name, int age) {
+    public Person(int id, String name, int age) {
         this.id = id;
         this.name = name;
         this.age = age;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
