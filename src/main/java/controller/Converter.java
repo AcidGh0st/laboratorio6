@@ -71,9 +71,43 @@ public class Converter extends LinkedStack
 
     @javafx.fxml.FXML
     public void convertOnAction(ActionEvent actionEvent) {
+        try {
+            //Convierte cada expresión y muestra los resultados dependiendo de la opción elegida
+            convertExpression(exp1TextField, result1Text1, result2Text1);
+            convertExpression(exp2TextField, result1Text2, result2Text2);
+            convertExpression(exp3TextField, result1Text3, result2Text3);
+            convertExpression(exp4TextField, result1Text4, result2Text4);
+            convertExpression(exp5TextField, result1Text5, result2Text5);
 
+        } catch (StackException e) {
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
 
+    private void convertExpression(TextField expressionField, Text result1Text, Text result2Text) throws StackException {
+        String expression = expressionField.getText();
+        if (!expression.isEmpty()) {
+            String result1 = "";
+            String result2 = "";
+            if (infixRadioButton.isSelected()) {
+                //Convierte de infija a prefija y postfija
+                result1 = infixToPrefixConverter(expression);
+                result2 = infixToPostfixConverter(expression);
+            } else if (postfixRadioButton.isSelected()) {
+                //Convierte de postfija a prefija e infija
+                result1 = postfixToPrefixConverter(expression);
+                result2 = postfixToInfixConverter(expression);
+            } else {
+                //Convierte de prefija a infija y postfija
+                result1 = prefixToInfixConverter(expression);
+                result2 = prefixToPostfixConverter(expression);
+            }
+            //Asigna los resultados a los campos de texto correspondientes
+            result1Text.setText(result1);
+            result2Text.setText(result2);
+        }
+    }
 
 
     @javafx.fxml.FXML
@@ -145,6 +179,8 @@ public class Converter extends LinkedStack
         LinkedStack operatorsStack = new LinkedStack();
         LinkedStack resultStack = new LinkedStack();
 
+        infixExpression = infixExpression.replaceAll("\\s", ""); //Elimina los espacios en blanco
+
         for (int i = infixExpression.length() - 1; i >= 0; i--) {
             char c = infixExpression.charAt(i);
 
@@ -187,6 +223,7 @@ public class Converter extends LinkedStack
     public String prefixToInfixConverter(String prefixExpression) throws StackException {
         LinkedStack stack = new LinkedStack();
 
+        prefixExpression = prefixExpression.replaceAll("\\s", ""); //Elimina los espacios en blanco
         for (int i = prefixExpression.length() - 1; i >= 0; i--) {
             char c = prefixExpression.charAt(i);
 
@@ -211,6 +248,8 @@ public class Converter extends LinkedStack
     public String infixToPostfixConverter(String infixExpression) throws StackException {
         LinkedStack operatorsStack = new LinkedStack();
         StringBuilder result = new StringBuilder();
+
+        infixExpression = infixExpression.replaceAll("\\s", ""); //Elimina los espacios en blanco
 
         for (int i = 0; i < infixExpression.length(); i++) {
             char c = infixExpression.charAt(i);
@@ -247,46 +286,31 @@ public class Converter extends LinkedStack
     public String postfixToInfixConverter(String postfixExpression) throws StackException {
         LinkedStack stack = new LinkedStack();
 
+        postfixExpression = postfixExpression.replaceAll("\\s", ""); //Elimina los espacios en blanco
+
         for (int i = 0; i < postfixExpression.length(); i++) {
             char c = postfixExpression.charAt(i);
 
-            //Si es un operando, lo apila
             if (Character.isLetterOrDigit(c)) {
+                // Si es un operando, lo apila
                 stack.push(Character.toString(c));
             } else if (isOperator(c)) {
-                //Verifica si la pila tiene al menos dos operandos antes de continuar
-                if (stack.size() < 2) {
-                    throw new StackException("Invalid postfix expression: insufficient operands");
-                }
-
-                //Si es un operador, extrae dos operandos del tope de la pila
+                // Si es un operador, desapila dos operandos
                 String operand2 = (String) stack.pop();
                 String operand1 = (String) stack.pop();
 
-                //Forma la expresión infix con paréntesis según la precedencia
-                String infix = operand1 + c + operand2;
+                // Forma la expresión infix combinando operandos y operador
+                String infix = "(" + operand1 + c + operand2 + ")";
 
-                //Agrega paréntesis alrededor de los operandos si es necesario
-                if (isOperator(operand1.charAt(0)) && getPriority(c) > getPriority(operand1.charAt(0))) {
-                    infix = "(" + infix + ")";
-                }
-                if (isOperator(operand2.charAt(0)) && getPriority(c) > getPriority(operand2.charAt(0))) {
-                    infix = "(" + infix + ")";
-                }
-
-                //Apila la nueva expresión infix
+                // Apila la expresión infix nuevamente en la pila
                 stack.push(infix);
             }
         }
 
-        //Verifica si la pila tiene exactamente una expresión infix al final del proceso
-        if (stack.size() != 1) {
-            throw new StackException("Invalid postfix expression: too many operands");
-        }
-
-        //El resultado final es la expresión infix que queda en la pila
+        // El resultado final es la expresión infix que queda en la pila
         return (String) stack.pop();
     }
+
 
 
 
@@ -294,30 +318,43 @@ public class Converter extends LinkedStack
         LinkedStack stack = new LinkedStack();
         LinkedStack resultStack = new LinkedStack();
 
+        prefixExpression = prefixExpression.replaceAll("\\s", ""); //Elimina los espacios en blanco
+
         for (int i = prefixExpression.length() - 1; i >= 0; i--) {
             char c = prefixExpression.charAt(i);
 
-            //Si es un operando, lo apila en resultStack
             if (Character.isLetterOrDigit(c)) {
                 resultStack.push(Character.toString(c));
             } else if (isOperator(c)) {
-                //Desapila los dos operandos
+                // Verificar si hay suficientes operandos en la pila
+                if (resultStack.size() < 2) {
+                    throw new StackException("Invalid prefix expression: insufficient operands");
+                }
+                // Desapilar los dos operandos
                 String operand1 = (String) resultStack.pop();
                 String operand2 = (String) resultStack.pop();
-                //Forma la expresión postfix combinando operandos y operador
+                // Formar la expresión postfix combinando operandos y operador
                 String postfix = operand1 + operand2 + c;
-                //Apila la expresión postfix en resultStack
+                // Apilar la expresión postfix en resultStack
                 resultStack.push(postfix);
             }
         }
 
-        //El resultado final es la expresión postfix que queda en resultStack
+        // Verificar que al final solo quede una expresión postfix en la pila
+        if (resultStack.size() != 1) {
+            throw new StackException("Invalid prefix expression: too many operands");
+        }
+
+        // El resultado final es la expresión postfix que queda en resultStack
         return (String) resultStack.pop();
     }
 
 
+
     public String postfixToPrefixConverter(String postfixExpression) throws StackException {
         LinkedStack stack = new LinkedStack();
+
+        postfixExpression = postfixExpression.replaceAll("\\s", ""); //Elimina los espacios en blanco
 
         for (int i = 0; i < postfixExpression.length(); i++) {
             char c = postfixExpression.charAt(i);
@@ -341,13 +378,11 @@ public class Converter extends LinkedStack
 
     //determina si un caracter es un operador
     private boolean isOperator(char c) {
-        return c == '+' || c == '-' || c == '*' || c == '/';
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
     }
 
-    //determina si el operador actual tiene menor precedencia que el operador en la cima de la pila
-    private boolean isLowerPrecedence(char currentOperator, char topOperator) {
-        return (getPriority(currentOperator) <= getPriority(topOperator));
-    }
+
+
 
     //determina la precedencia de un operador
     private int getPriority(char operator) {
@@ -358,8 +393,11 @@ public class Converter extends LinkedStack
             case '*':
             case '/':
                 return 2;
+            case '^':
+                return 3; // Asigna una prioridad más alta al operador de potencia
             default:
-                return 0; //Si no es un operador, retorno 0
+                return 0; // Si no es un operador, retorno 0
         }
     }
+
 }
