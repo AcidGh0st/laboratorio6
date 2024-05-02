@@ -29,7 +29,6 @@ public class Message {
     public String toString() {
         return "Message{" +
                 "priority=" + priority +
-                ", content='" + content + '\'' +
-                '}';
+                ", content='" + content + "}\n";
     }
 }
